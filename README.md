@@ -13,3 +13,7 @@ Promise 参照了 Promise/A+ 实现来实现
 ## throttle
 
 规定时间内，只执行一次操作。与防抖不同的是，它是在规定时间内肯定会执行，有且只有一次
+
+## clone
+
+深拷贝，参考文章：https://www.51cto.com/article/719600.html
