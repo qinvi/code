@@ -2,9 +2,13 @@
 
 这里保管着初步快速实现的源码，不一定是完整无暇的，单纯练手记录
 
-## Promise.js
+## Promise/Promise.js
 
-Promise 参照了 Promise/A+ 实现来实现
+参照了 Promise 特性实现
+
+## Promise/A+.js
+
+按照 Promise/A+ 规范实现 Promise
 
 ## debounce.js
 
