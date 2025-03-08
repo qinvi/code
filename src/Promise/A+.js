@@ -44,14 +44,15 @@ class Promise {
         // 2.2.7 实现值穿透
         let promise2 = new Promise((resolve, reject) => {
             // 2.2.2
+            let self = this
             if (this.#status === FULLFILLED) {
                 // 2.2.4 既可以使用宏任务 setTimeout
                 // 也可以使用微任务 process.nextTick 实现异步
                 setTimeout(() => {
                     try {
-                        let x = onFullfilled(this.#value)
+                        let x = onFullfilled(self.#value)
                         // 2.2.7.1
-                        this.resolvePromise(promise2, x, resolve, reject)
+                        self.resolvePromise(promise2, x, resolve, reject)
                     } catch (e) {
                         reject(e)
                     }
@@ -61,9 +62,9 @@ class Promise {
                 // 2.2.4
                 setTimeout(() => {
                     try {
-                        let x = onRejected(this.#reason)
+                        let x = onRejected(self.#reason)
                         // 2.2.7.1
-                        this.resolvePromise(promise2, x, resolve, reject)
+                        self.resolvePromise(promise2, x, resolve, reject)
                     } catch (e) {
                         reject(e)
                     }
@@ -74,8 +75,8 @@ class Promise {
                 this.#onFullfilledCallbacks.push(() => {
                     setTimeout(() => {
                         try {
-                            let x = onFullfilled(this.#value)
-                            this.resolvePromise(promise2, x, resolve, reject)
+                            let x = onFullfilled(self.#value)
+                            self.resolvePromise(promise2, x, resolve, reject)
                         } catch (e) {
                             reject(e)
                         }
@@ -85,8 +86,8 @@ class Promise {
                 this.#onRejectedCallbacks.push(() => {
                     setTimeout(() => {
                         try {
-                            let x = onRejected(this.#reason)
-                            this.resolvePromise(promise2, x, resolve, reject)
+                            let x = onRejected(self.#reason)
+                            self.resolvePromise(promise2, x, resolve, reject)
                         } catch (e) {
                             reject(e)
                         }
