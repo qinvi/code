@@ -18,7 +18,7 @@ class Promise {
                 this.#value = value
                 this.#status = FULLFILLED
                 // 2.2.6.1 then 可能会执行多次,按顺序依次执行
-                this.#onFullfilledCallbacks.forEach(fn => fn(this.value))
+                this.#onFullfilledCallbacks.forEach(fn => fn(this.#value))
             }
         }
         const reject = (e) => {
