@@ -100,6 +100,21 @@ class Promise {
     catch (onRejected) {
         return this.then(null, onRejected)
     }
+    /**
+     * 无论 status 为 fullfilled 还是 rejected，finally 都会执行
+     * @param {*} callback 
+     * @returns Promise
+     */
+    finally (callback) {
+        // similar to calling then(onFinally, onFinally)
+        return this.then(value => {
+            return Promise.resolve(callback()).then(() => value)
+        }, e => {
+            return Promise.resolve(callback()).then(null, () => {
+                throw e
+            })
+        })
+    }
     resolvePromise (promise2, x, resolve, reject) {
         // 主要解决 x 是 promise/thenable 对象的问题
         // 2.3.1
@@ -149,5 +164,33 @@ class Promise {
             // 2.3.4
             resolve(x)
         }
+    }
+    /**
+     * 
+     * @param {Promise, thenable, value} value 
+     * @returns Promise
+     */
+    static resolve (value) {
+        // value is promise，return Promise
+        if (value instanceof Promise) {
+            return value
+        }
+        return new Promise((resolve, reject) => {
+            if (value && value.then && typeof value.then === 'function') {
+                value.then(resolve, reject)
+            } else {
+                resolve(value)
+            }
+        })
+    }
+    /**
+     * 返回 以 e 为参数的 reject promise
+     * @param {reason} e 
+     * @returns Promise
+     */
+    static reject (e) {
+        return new Promise((resolve, reject) => {
+            reject(e)
+        })
     }
 }
